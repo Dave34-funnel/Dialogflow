@@ -1,0 +1,37 @@
+const express = require('express');
+const app = express();
+
+app.use(express.json());
+
+app.post('/webhook', (req, res) => {
+    const carType = req.body.queryResult.parameters.car_type; // Extract car type
+    let responseMessage;
+
+    switch (carType) {
+        case 'Sedan':
+            responseMessage = "Sedan pricing starts at $30/day. Packages include Standard, Deluxe, and Premium.";
+            break;
+        case 'Large SUV':
+            responseMessage = "Large SUV pricing starts at $50/day. Packages include Off-road, Family, and Luxury.";
+            break;
+        case 'Small SUV':
+            responseMessage = "Small SUV pricing starts at $40/day. Packages include Compact, Adventure, and Comfort.";
+            break;
+        case 'Van':
+            responseMessage = "Van pricing starts at $60/day. Packages include Cargo, Passenger, and Luxury.";
+            break;
+        case 'Truck':
+            responseMessage = "Truck pricing starts at $70/day. Packages include Utility, Heavy-duty, and Premium.";
+            break;
+        default:
+            responseMessage = "Please select a valid car type.";
+    }
+
+    res.json({
+        fulfillmentText: responseMessage, // Send the response text
+    });
+});
+
+app.listen(3000, () => {
+    console.log('Webhook is running on port 3000');
+});
